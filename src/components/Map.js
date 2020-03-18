@@ -64,10 +64,11 @@ class MapStations extends Component {
         if (marker.status === "OPEN" && marker.available_bikes > 0) {
 
         return (
-            
+
             <Marker position={marker.position} key={index} icon={statusOpen} onClick={() => this.editSelectedStation(marker)} >
               
             </Marker>
+
 
         )} else {
 
@@ -85,7 +86,6 @@ class MapStations extends Component {
 
     }
     // Fin de la fonction des marqueurs
-
 
     editSelectedStation = (marker) => {
 
@@ -110,10 +110,8 @@ class MapStations extends Component {
       const zoom = 14;
 
       return (
-        <div className="containermap container-fluid">
-          <div className='row'>
-            <div className="mapPart col-md-8">
-              <div id="map" className="container-fluid">
+        <div className="containermap">
+            <div className="mapPart">
                 <Map center={mapPosition} zoom={zoom} maxZoom={20} className="markercluster-map">
                   <TileLayer
                     url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
@@ -122,22 +120,15 @@ class MapStations extends Component {
                     {this.addMarker()}
                   </MarkerClusterGroup>
                 </Map>
-              </div>
+              <div className="formPart">
+                <Formulaire 
+                  name={selectedStation.name} 
+                  address={selectedStation.address} 
+                  bikes={selectedStation.available_bikes} 
+                  status={selectedStation.status}
+                />
             </div>
-            <div className="formPart col-md-4">
-              <Formulaire 
-              name={selectedStation.name} 
-              address={selectedStation.address} 
-              bikes={selectedStation.available_bikes} 
-              status={selectedStation.status}
-              />
-            </div>
-          </div>
-          <div className="row" >
-            <div className="infoText col-md-12">
-              <p>{`Votre réservation pour la station ${selectedStation.name} à l'adresse ${selectedStation.address} à bien été bien en compte.`}</p>
-            </div>
-          </div>
+            </div> 
         </div>
       )
 

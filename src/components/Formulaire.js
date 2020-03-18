@@ -1,13 +1,28 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import '../App.css';
 import Signature from './Signature';
-
+import {Modal} from 'react-bootstrap';
+import moment from 'moment';
+import 'moment-timezone';
 
 export default function Formulaire ({ name , address , status , bikes }) {
 
-    /* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
-    /* ----------------------------------● USERS
-    /* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+    // Action au chargement de la page
+    window.addEventListener('load', () => {
+        handleCheckReservation();
+    })
+
+    // Action à la fermeture de la page
+    window.addEventListener('beforeunload', () => {
+        const timeUnload = moment();
+        sessionStorage.setItem('logout', timeUnload);
+        sessionStorage.setItem('minutes', minutes);
+        sessionStorage.setItem('secondes', seconds);
+    })
+
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO USERS
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
     
     // Hooks concernant le prénom et le nom
     const [surname, setSurname] = useState('');
@@ -25,125 +40,194 @@ export default function Formulaire ({ name , address , status , bikes }) {
         setLastname(input)
     }
 
-    /* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
-    /* ----------------------------------● RESERVATION
-    /* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO RESERVATION
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
 
-    // Etat de l'autorisation de réservation 
-    let signForm = false;
+    // Etat du popup 
+    const [show, setShow] = useState(false);
+    const [reserve, setReserve] = useState(false);
 
     // Fonction au click du bouton de réservation
-    const clickButtonForm = () => {
-
-        if ( name !=null && bikes > 0 && status === "OPEN" ) {
-            
-            signForm = !signForm;
-            localStorage.setItem("surname", surname);       // PROVISOIRE
-            localStorage.setItem("lastname", lastname);     // PROVISOIRE
-            setSurname('');
-            setLastname('');
-            setIsActive(!isActive);                         // PROVISOIRE
-            addCanvas();
-
+    const clickButtonForm = (e) => {
+        e.preventDefault();
+        if ( name !=null && bikes > 0 && status === "OPEN" && surname !== '' && lastname !== '') {
+            setShow(true)
         } else {
-
-            signForm = false;
-
+            setShow(false)
         }
 
-        console.log(signForm)
+    }
+
+    const handleCheckReservation = () => {
+
+        // Stock la date et l'heure au chargement de la page
+        let timeLogin = moment();
+
+        // Récupère l'heure et la date de la déconnextion
+        let  timeLogout = sessionStorage.getItem('logout');
+
+        // Calcule la différence pour savoir le temps que l'utilisateur à passer hors de la page
+        let duration = moment.duration(timeLogin.diff(timeLogout));
+
+        //Vérifie si la réservatione est stockée dans le web storage
+        if (sessionStorage.getItem('reservation')) { 
+            // Réinjecte les minutes et les seconds - le temps de déconnexion
+            setMinutes(sessionStorage.getItem('minutes') - duration._data.minutes);
+            setSeconds(sessionStorage.getItem('secondes') - duration._data.minutes);
+            setReserve(true);
+            setIsActive(true);
+            document.querySelector('.inputsurname').setAttribute('disabled', ''); // Désactive input surname
+            document.querySelector('.inputlastname').setAttribute('disabled', ''); // Désactive input lastname
+            document.querySelector('.btnReserve').style.display = "none"; // Désactive le bouton de réservation
+        }
 
     }
 
-    const addCanvas = () => {
-
-        return (
-
-            <Signature />
-
-        )
-
+    // Fonction au clique du bouton "Validez" dans le popup canvas
+    const handleValidAfterSign = (e) => {
+        e.preventDefault();
+        localStorage.setItem("surname", surname); // Sauvegarde le prénom dans localStorage
+        localStorage.setItem("lastname", lastname); // Sauvegarde le nom dans localStorage
+        sessionStorage.setItem('address', address); // Sauvegarde l'adresse en cours dans sessionStorage
+        document.querySelector('.inputsurname').setAttribute('disabled', '');
+        document.querySelector('.inputlastname').setAttribute('disabled', '');
+        setReserve(true); // Active la réservation
+        setIsActive(!isActive);     // Déclenche le Timer
+        setShow(false); // Ferme le Modal
+        document.querySelector('.btnReserve').style.display = "none"; // Désactive le bouton de réservation
+        let timeValidation = moment().add(20, 'm').toDate();
+        sessionStorage.setItem('endReservation', timeValidation);
     }
 
-    /* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
-    /* ----------------------------------● TIMER
-    /* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+    if (reserve === true) {
+        sessionStorage.setItem('reservation', reserve); // Sauvegarde l'état de la reservation
+    } 
 
-    const [minutes, setMinutes] = useState(1);         // Hook contenant les minutes
+    // Fonction d'annulation de la réservation
+    const handleCancelReservation = (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        document.querySelector('.btnReserve').style.display = "block";
+        document.querySelector('.inputsurname').removeAttribute('disabled', '');
+        document.querySelector('.inputlastname').removeAttribute('disabled', '');
+        setIsActive(false);
+        setReserve(false);
+        setSurname('');
+        setLastname('');
+    }
+
+    // Fonction d'expiration de la réservation
+    const handleExpireReservation = () => {
+        sessionStorage.clear();
+        document.querySelector('.btnReserve').style.display = "block";
+        document.querySelector('.inputsurname').removeAttribute('disabled', '');
+        document.querySelector('.inputlastname').removeAttribute('disabled', '');
+        setIsActive(false);
+        setReserve(false);
+        setSurname('');
+        setLastname('');
+    }
+
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO TIMER
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+
+    const [minutes, setMinutes] = useState(20);         // Hook contenant les minutes
     const [seconds, setSeconds] = useState(0);          // Hook contenant les secondes
     const [isActive, setIsActive] = useState(false);    // Hook contenant l'état d'activation du compteur
-    
+
     useEffect( () => {
 
-        let interval = null;
-
+        let myInterval = null;
+    
         if (isActive) {
-
-        if (seconds > 0) {
-            interval = setInterval( () => setSeconds(seconds - 1), 1000);
-            return () => clearInterval(interval)
-        } 
-
-        if (minutes === 0) {
-            return () => clearInterval(interval);
-        } else {
-            interval = setInterval( () => {
-                setMinutes(minutes - 1);
-                setSeconds(59);
+    
+          if (seconds > 0) {
+            myInterval = setInterval( () => setSeconds(seconds - 1), 1000);
+            return () => clearInterval(myInterval);
+          }
+    
+          if (seconds === 0 && minutes >= 0) {
+            myInterval = setInterval( () => {
+              setMinutes(minutes - 1);
+              setSeconds(59);
             }, 1000);
-            return () => clearInterval(interval)
-        }}
+            return () => (clearInterval(myInterval))
+          } else {
+            handleExpireReservation();
+          }
+    
+        }
+    
+      }, [seconds, minutes, isActive])
 
-    }, [seconds, minutes, isActive]); // Modification seulement si changement sur un de ces arguments
-
-
-    const [canvas, setCanvas] = useState('canvas-hidden');
-
-    const handleCanvasVisible = () => {
-
-        setCanvas('canvas')
-
-    }
-
-    console.log(canvas)
-
-    /* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
-    /* ----------------------------------● RETURN FUNCTION
-    /* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO RETURN FUNCTION
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
     
     return (
 
         <Fragment>
-            <div className="form container-fluid">
+            <div className="form">
                 <div>
-                    <h1>Stations : </h1>
-                    <p>{name}</p>
+                    <h1>Stations</h1>
+                    <p className='info'>{name}</p>
                 </div>
                 <div>
-                    <h1>Adresse : </h1>
-                    <p>{address}</p>
+                    <h1>Adresse</h1>
+                    <p className='info'>{address}</p>
                 </div>
                 <div>
-                    <h1>Vélos : </h1>
-                    <p>{bikes}</p>
+                    <h1>Vélos</h1>
+                    <p className='info'>{bikes}</p>
                 </div>
                 <div>
-                    <h1>Status : </h1>
-                    <p>{status}</p>
+                    <h1>Status</h1>
+                    <p className='info'>{
+
+                        status === 'OPEN' ? 'OUVERTE' : null ||
+                        status === 'CLOSE' ? 'FERMEE' : null
+
+                    }</p>
                 </div>
-                <div>
-                    <h2>{surname}</h2>
-                    <h2>{lastname}</h2>
+                <hr/>
+                <div className='infoUser'>
+                <h1>Utilisateur</h1>
+                    <input required="required" className='inputsurname' type='text' placeholder='Prénom' value={surname} onChange={handleSurname} />
+                    <input required="required" className='inputlastname'type='text'placeholder='Nom' value={lastname} onChange={handleLastname} />
                 </div>
-                
-                <p className="timer">
-                    {minutes < 10 ? '0' + minutes : minutes} : {seconds < 10 ? '0' + seconds : seconds}</p>
-                <p className="timer"></p>
-                <input type='text' placeholder='Prénom' value={surname} onChange={handleSurname} />
-                <input type='text'placeholder='Nom' value={lastname} onChange={handleLastname} />
-                <button onClick={clickButtonForm}>Réserver</button>
-                <button onClick={handleCanvasVisible}>Afficher Canvas</button>
-                <Signature canvas={canvas} />
+                    <a href='false' className='btnReserve' onClick={clickButtonForm}>Réserver</a>
+                    {
+                    reserve ? 
+                    <Fragment>
+                    <div className='viewReserve' >
+                    <p>{` Votre réservation au nom de ${localStorage.getItem('lastname')} ${localStorage.getItem('surname')} à l'adresse ${sessionStorage.getItem('address')} à bien été prise en compte. `}</p>
+                    <p className="viewTimer">{` Durée restante : ${minutes < 10 ? '0' + minutes : minutes} : ${seconds < 10 ? '0' + seconds : seconds} `}</p>
+                    <a href='false' className="btnCancelReserve" onClick={handleCancelReservation}>Annuler</a>
+                    </div>
+                    </Fragment>
+                    : <span></span>
+                }
+
+                <Modal
+                    show={show}
+                    onHide={() => setShow(false)}
+                    dialogClassName="modal-90w"
+                    aria-labelledby="example-custom-modal-styling-title"
+                    className="modal"
+                >
+                    <Modal.Header closeButton className='modal-header'>
+                        <Modal.Title id="example-custom-modal-styling-title">
+                            Réservation
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body className='modal-body'>
+                        <Signature state={show} handleValid={handleValidAfterSign} />
+                        <a href='false' className='btnValidReserve' onClick={handleValidAfterSign}>Validez</a>
+                    </Modal.Body>
+                </Modal>
+
             </div>
         </Fragment>
 

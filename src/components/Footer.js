@@ -6,7 +6,7 @@ const Footer = () => {
     return (
 
         <footer>
-            <h3>Ce site à été créer par une étudiant de OpenClassRooms</h3>
+            <h3>Ce site à été produit par un élève en formation chez OpenClassRooms</h3>
         </footer>
 
     )

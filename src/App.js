@@ -3,11 +3,12 @@ import MapStations from './components/Map';
 import Header from './components/Header';
 import Slider from './components/Slider';
 import Footer from './components/Footer';
-// import Cursor from './components/Cursor';
 import './App.css';
 
 
-// Déclaration des constantes nécessaires pour la requête
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO VARIABLES DECLARATION
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
 
 const city = 'Toulouse';
 
@@ -19,9 +20,12 @@ const weatherCity = 'Toulouse';
 
 const weatherApiKey = '69b92398024593946ae629c9ade5fa67';
 
-const weatherURL = (`http://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${weatherApiKey}&lang=fr=units=metric`);
+const weatherURL = (`http://api.openweathermap.org/data/2.5/weather?q=${weatherCity}&appid=${weatherApiKey}&lang=fr&units=metric`);
 
-// Déclaration de la classe principale
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO CLASS
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+
 class App extends Component {
 
         state = {
@@ -32,7 +36,10 @@ class App extends Component {
         }
 
 
-    // Fonction pour faire la requête JCDecaux
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+ /* ----------------------------------● TODO Request API JCDECAUX
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+    
     apiRequest = () => {
 
         fetch(URL)
@@ -47,6 +54,10 @@ class App extends Component {
 
     }
 
+ /* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO Request API OPENWEATHERMAP
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+    
     apiRequestWeather = () => {
 
         fetch(weatherURL)
@@ -64,20 +75,25 @@ class App extends Component {
 
     }
 
-     
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO COMPONENT LOADED
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
 
     // Quand le composant est chargé, execution de la fonction traitant la requête Ajax
     componentDidMount() {
 
         this.apiRequest()
         this.apiRequestWeather()
-        console.log(this.state.weatherInfo)
+
     }
 
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO RETURN 
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
 
+    render() {    
 
-    render() {     
-        
+        // Destructuring ES6 ( Reviens à dire que stations = this.state.stations et que weatherInfo = this.state.weatherInfo)
         const {stations, weatherInfo} = this.state;
 
         return (
