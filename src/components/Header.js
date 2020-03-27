@@ -19,7 +19,7 @@ const Header = ({ weather }) => {
         let tl = new TimelineMax();
 
         tl
-            .from('.maintitle', 1.5, {autoAlpha:0 , opacity : 0, y: -20, ease: Power3.easeOut, delay: 2}, '-=1.00')
+            .from('.maintitle', 1.5, {autoAlpha:0 , opacity : 0, y: -20, ease: Power3.easeOut, delay : 3}, '-=1.00')
             .from('.lead', 1.5, {autoAlpha:0 , y: -10, ease: Power3.easeOut}, '-=1.00')
             .from('.item1', 1.5, {autoAlpha:0 , y : -20 , ease: Power3.easeOut}, '-=1.00')
             .from('.item2', 1.5, {autoAlpha:0 , y : -20 , ease: Power3.easeOut}, '-=1.00')

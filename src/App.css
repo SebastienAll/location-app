@@ -627,3 +627,15 @@ footer h3 {
   }
 
 }
+
+@media all and (min-width : 900px) {
+
+  .containerslide {
+    width: 80%;
+  }
+
+  .pagination {
+    bottom: -30px;
+  }
+
+}
