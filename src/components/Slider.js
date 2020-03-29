@@ -66,7 +66,19 @@ export default class Slider extends Component {
             // Fonction pour démarrer l'interval
             function startSlider () {
                 intervalSlider = setInterval( () => {
-                    nextSlider();
+
+                    if(imgPos >= imgItems) {
+                        imgPos = 1
+                    } else {
+                        imgPos++;
+                    }
+    
+                    $('.slider li').hide();
+                    $('.slider li:nth-child('+ imgPos +')').fadeIn();
+    
+                    $('.pagination li').css({'color' : '#272727'});
+                    $('.pagination li:nth-child('+ imgPos +')').css({'color' : '#ef9a9a'});
+                    
                 }, 5000);
             }
 
@@ -102,6 +114,7 @@ export default class Slider extends Component {
 
                 $('.pagination li').css({'color' : '#272727'});
                 $('.pagination li:nth-child('+ imgPos +')').css({'color' : '#ef9a9a'});
+                clearInterval(intervalSlider);
 
             }
 
@@ -119,6 +132,7 @@ export default class Slider extends Component {
 
                 $('.pagination li').css({'color' : '#272727'});
                 $('.pagination li:nth-child('+ imgPos +')').css({'color' : '#ef9a9a'});
+                clearInterval(intervalSlider);
 
             }
 
