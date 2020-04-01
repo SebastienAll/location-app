@@ -406,6 +406,18 @@ ul, ol {
   box-shadow: 0px 7px 15px -1px rgba(0,0,0,0.75);
 }
 
+.errorMessage {
+  margin: 30px auto;
+  font-family: 'Sen';
+  font-size: 1.1em;
+  padding: 30px;
+  color: white;
+  background-color: crimson;
+  text-align: justify;
+  border-radius: 4px;
+  box-shadow: 0px 7px 15px -1px rgba(0,0,0,0.75);
+}
+
 .viewTimer {
 
 }

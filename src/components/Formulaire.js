@@ -7,6 +7,10 @@ import 'moment-timezone';
 
 export default function Formulaire ({ name , address , status , bikes }) {
 
+/* ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀ */
+/* ----------------------------------● TODO CHECK RESERVATION
+/* ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ */
+
     // Action au chargement de la page
     window.addEventListener('load', () => {
         handleCheckReservation();
@@ -47,14 +51,17 @@ export default function Formulaire ({ name , address , status , bikes }) {
     // Etat du popup 
     const [show, setShow] = useState(false);
     const [reserve, setReserve] = useState(false);
+    const [error, setError] = useState(false);
 
     // Fonction au click du bouton de réservation
     const clickButtonForm = (e) => {
         e.preventDefault();
         if ( name !=null && bikes > 0 && status === "OPEN" && surname !== '' && lastname !== '') {
-            setShow(true)
+            setShow(true);
+            setError(false);
         } else {
             setShow(false)
+            setError(true);
         }
 
     }
@@ -209,6 +216,13 @@ export default function Formulaire ({ name , address , status , bikes }) {
                     </Fragment>
                     : <span></span>
                 }
+                {
+                    error ?
+                    <Fragment>
+                        <p className='errorMessage' >Veuillez sélectionner une station, et remplir le nom et prénom</p>
+                    </Fragment>
+                    : <span></span>
+                }
 
                 <Modal
                     show={show}
@@ -224,7 +238,6 @@ export default function Formulaire ({ name , address , status , bikes }) {
                     </Modal.Header>
                     <Modal.Body className='modal-body'>
                         <Signature state={show} handleValid={handleValidAfterSign} />
-                        <a href='false' className='btnValidReserve' onClick={handleValidAfterSign}>Validez</a>
                     </Modal.Body>
                 </Modal>
 

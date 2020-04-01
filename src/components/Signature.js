@@ -1,8 +1,9 @@
 import React from "react";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 export default function Signature(props) {
 
+  const [empty, setEmpty] = useState(true);
 
   useEffect(() => {
 
@@ -21,6 +22,7 @@ export default function Signature(props) {
 
     function startPosition(e) {
       painting = true;
+      setEmpty(false);
       draw(e);
     }
 
@@ -50,6 +52,7 @@ export default function Signature(props) {
 
     function mobileStart(e) {
       e.preventDefault();
+      setEmpty(false);
       painting = true;
       mobileDraw(e);
     }
@@ -73,6 +76,7 @@ export default function Signature(props) {
     clearCanvas.addEventListener("click", (e) => {
       e.preventDefault();
       ctx.clearRect(x, y, canvas.width, canvas.height);
+      setEmpty(true);
     });
 
   }, []);
@@ -84,6 +88,11 @@ export default function Signature(props) {
           </div>
           <div className="btn-canvas">
             <a href='false' className="btn-clear">Effacer</a>
+            {
+              empty === false ?
+              <a href='false' className='btnValidReserve' onClick={props.handleValid}>Validez</a>
+              : <span></span>
+            }
           </div>
     </Fragment>
   );

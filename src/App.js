@@ -99,25 +99,22 @@ class App extends Component {
         return (
             <Fragment>
 
-
-                <div id="headerpart">
+                <section id="headerpart">
                     <Header weather={weatherInfo} />
-                </div>
+                </section>
 
                 <section className="sliderpart">
                     <Slider />
                 </section>
 
-                <div className="mappart">
+                <section className="mappart">
                     <MapStations 
                         stations={stations} />
-                </div>
+                </section>
 
-                <div className="footerpart">
+                <section className="footerpart">
                     <Footer/>
-                </div>
-
-                
+                </section>
 
             </Fragment>
         )
